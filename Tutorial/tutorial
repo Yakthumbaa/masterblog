@@ -1,0 +1,163 @@
+_________________________________ [[ Submission Guidelines ]]
+
+Please write the code on your computer. Once finished, upload the exercise to Codio so you can get feedback
+on your code.
+
+    -> Create a Basic Flask Module
+    In this stage, you’ll create the basic skeleton for your code, and push it to your GitHub profile! 👑
+        1. Create a new GitHub repository in your profile.
+        2. Create a new PyCharm Project.
+        3. Clone the repository to your PyCharm project using the terminal.
+        4. Initialize your Flask app: Create a new file called app.py and write the following lines of
+           code to initialize your Flask app.
+
+            from flask import Flask
+
+            app = Flask(__name__)
+
+
+            @app.route('/')
+            def hello_world():
+                return 'Hello, World!'
+
+
+            if __name__ == '__main__':
+                app.run()
+
+        5. Push (add, commit, push) your code to the repository.
+        6. Verify that the code was successfully uploaded to your repository by browsing to GitHub.
+
+_________________________________ [[ Designing the Routes and Data Structure ]]
+
+In this part, we’re going to be setting up the home route (or URL) that our blog will respond to, and
+also design the data structure for saving our blog posts.
+
+    1. Design the Data Structure for Blog Posts
+
+    Our first step is to create a data structure to store our blog posts. Each blog post should contain
+    an author, a title, and content. To keep things simple, we’ll start by using a list of dictionaries
+    to store our blog posts, where each dictionary represents a blog post. In each dictionary, we’ll
+    have keys for 'author’, 'title’, and 'content’.
+
+    Here is a basic setup for our data structure:
+
+    [
+    {'id': 1, 'author': 'John Doe', 'title': 'First Post', 'content': 'This is my first post.'},
+    {'id': 2, 'author': 'Jane Doe', 'title': 'Second Post', 'content': 'This is another post.'},
+    # More blog posts can go here...
+    ]
+
+    --> About ID field
+
+    A common practice in databases, or any data storage, is to attach a unique identifier (ID) to each
+    record. The rational for this is to have an identifier for each record that can be used for CRUD
+    operations.
+    For example, when we want to delete a blog post, we would like to specify the ID of the blog post for
+    deletion. If we did not have the ID, how can we know which blog post to delete?
+
+    --> Save it as a JSON file
+
+    Your data structure should be saved in a JSON file, which will be used as a storage file. Your
+    storage file will contain this data structure, and whenever you need to read, update, add or delete
+    a blog post, change it directly.
+
+    2. Create the Index Route
+
+    Our next step is to create the index route (/). This route will display all blog posts. We’ll create
+    a function (for instance, index()) that sends our list of blog posts to a template for display.
+
+    from flask import render_template
+
+    @app.route('/')
+    def index():
+        # add code here to fetch the job posts from a file
+        return render_template('index.html', posts=blog_posts)
+
+    In this function, we’re using Flask’s render_template function to render the index.html template.
+    We’re also passing our list of blog posts to the template with posts=blog_posts. In the template,
+    we’ll be able to access this list with the variable name posts.
+
+    You should change the template and make it show the blog posts from the JSON file.
+
+    ❗Note: this should be done with a for loop inside the template. Do not hard-code each blog post
+    individually, since it should be fetched from the JSON file.
+
+    << Wait, where is index.html? >>
+
+    Don’t worry, we got you covered for now! 🤓
+
+    Take a look at the templates folder at the right file tree in Codio. You have there a template we’ve
+    made for you, index.html, that you can use.
+
+    In addition, you have a stylesheet under static/style.css. If you render the template index.html,
+    the stylesheet will be loaded (why? search it in index.html!)
+
+    Download these files to your computer and make sure it works properly when you render the / route
+    with Flask.
+
+    That’s it for now! You’ve designed your data structure and created your first route. In the next
+    part, we’ll dive deeper into Flask and create more routes for our blog application.
+
+_________________________________ [[ Adding the "Add" Route ]]
+
+In this part, we’ll add a new route to our blog application that will allow us to add a new blog post.
+We’re going to make the /add route, which will display a form for creating a new blog post if a GET
+request is sent, and add a new blog post to our list if a POST request is sent.
+This step can be a bit tricky, so we’re going to break it down. But don’t worry, we’re here to guide
+you through it!
+
+    1. Create the Route and the Function
+
+    First, we need to create the route and the function that will be executed when a user visits /add.
+    Our function will be called add().
+
+    from flask import request, render_template
+
+    @app.route('/add', methods=['GET', 'POST'])
+    def add():
+        if request.method == 'POST':
+            # We will fill this in the next step
+            pass
+        return render_template('add.html')
+
+    In the @app.route decorator, we’ve added methods=['GET', 'POST']. This tells Flask that this route
+    should respond to both GET and POST requests.
+
+    If a POST request is sent to this route, we want to add a new blog post. If any other type of
+    request is sent (or by default, a GET request), we want to display a form for adding a new blog
+    post. We’ve set up an if statement to handle this.
+
+    2. Create the Form
+
+    Create the template for add.html file. The template should contain a form that asks for the relevant
+    details from the user, and submits a POST request to the same route - /add.
+    If you’re unsure of how to do it, search online! There are plenty of materials on how to create POST
+    HTML forms. You can assist ChatGPT to make it prettier, but make sure you understand it completely.
+
+    3. Handle POST Requests
+    Now we need to fill in our function to handle POST requests. When a POST request is sent, that means
+    the user has filled out our form and submitted it. We want to take the data from the form and use
+    it to create a new blog post.
+
+    from flask import redirect
+
+    @app.route('/add', methods=['GET', 'POST'])
+    def add():
+        if request.method == 'POST':
+            # Add the code that handles adding a new blog
+            ...
+            return redirect(url_for('index'))
+
+        return render_template('add.html')
+
+    In this updated function, we’re using request.form.get() to get the data from our form. We’re then
+    appending a new blog post to our blog_posts list and redirecting the user back to the home page to
+    view all the blog postings.
+
+    Notice that when you’re adding a new blog post, you need to generate an ID for the newly created
+    blog post. The ID should be unique, you can implement it however you want.
+
+    <<Link from home page>>
+
+    Add a link from the home page to the /add route, so users that want to add a blog post can reach
+    the add page from the home page.
