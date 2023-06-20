@@ -33,7 +33,6 @@ In this part, we’re going to be setting up the home route (or URL) that our bl
 also design the data structure for saving our blog posts.
 
     1. Design the Data Structure for Blog Posts
-
     Our first step is to create a data structure to store our blog posts. Each blog post should contain
     an author, a title, and content. To keep things simple, we’ll start by using a list of dictionaries
     to store our blog posts, where each dictionary represents a blog post. In each dictionary, we’ll
@@ -48,7 +47,6 @@ also design the data structure for saving our blog posts.
     ]
 
     --> About ID field
-
     A common practice in databases, or any data storage, is to attach a unique identifier (ID) to each
     record. The rational for this is to have an identifier for each record that can be used for CRUD
     operations.
@@ -56,13 +54,11 @@ also design the data structure for saving our blog posts.
     deletion. If we did not have the ID, how can we know which blog post to delete?
 
     --> Save it as a JSON file
-
     Your data structure should be saved in a JSON file, which will be used as a storage file. Your
     storage file will contain this data structure, and whenever you need to read, update, add or delete
     a blog post, change it directly.
 
     2. Create the Index Route
-
     Our next step is to create the index route (/). This route will display all blog posts. We’ll create
     a function (for instance, index()) that sends our list of blog posts to a template for display.
 
@@ -82,8 +78,7 @@ also design the data structure for saving our blog posts.
     ❗Note: this should be done with a for loop inside the template. Do not hard-code each blog post
     individually, since it should be fetched from the JSON file.
 
-    << Wait, where is index.html? >>
-
+    <<<< Wait, where is index.html? >>>>
     Don’t worry, we got you covered for now! 🤓
 
     Take a look at the templates folder at the right file tree in Codio. You have there a template we’ve
@@ -107,7 +102,6 @@ This step can be a bit tricky, so we’re going to break it down. But don’t wo
 you through it!
 
     1. Create the Route and the Function
-
     First, we need to create the route and the function that will be executed when a user visits /add.
     Our function will be called add().
 
@@ -128,7 +122,6 @@ you through it!
     post. We’ve set up an if statement to handle this.
 
     2. Create the Form
-
     Create the template for add.html file. The template should contain a form that asks for the relevant
     details from the user, and submits a POST request to the same route - /add.
     If you’re unsure of how to do it, search online! There are plenty of materials on how to create POST
@@ -157,7 +150,35 @@ you through it!
     Notice that when you’re adding a new blog post, you need to generate an ID for the newly created
     blog post. The ID should be unique, you can implement it however you want.
 
-    <<Link from home page>>
-
+    <<<< Link from home page >>>>
     Add a link from the home page to the /add route, so users that want to add a blog post can reach
     the add page from the home page.
+
+_________________________________ [[ Adding the "Delete" Route ]]
+
+In this part, we’ll add the ability to delete a blog post. This involves adding a “Delete” button next
+to each blog post on the index page, and creating a new route to handle the deletion of blog posts.
+
+    1. Update the Index Template
+
+    Update your index.html template to include a “Delete” button next to each blog post. When clicked,
+    this button should send the user to the delete route for the corresponding blog post.
+
+    The route for the delete should be:
+
+    /delete/<post_id>
+
+    2. Add the Delete Route
+    Now let’s add the delete route in app.py. This route will remove the specified blog post from our
+    blog_posts list and then redirect the user back to the home page.
+
+    @app.route('/delete/<int:post_id>')
+    def delete(post_id):
+        # Find the blog post with the given id and remove it from the list
+        # Redirect back to the home page
+
+    Implement the code in the function and test it by deleting some posts from the home page, and by
+    accessing the route directly.
+
+    And there you have it! You’ve added the ability to delete blog posts to your Flask blog application.
+    Your application now supports displaying, adding, and deleting blog posts 🎊

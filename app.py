@@ -16,12 +16,23 @@ def fetch_blog_data(filepath=DATA_FILEPATH):
     return blog_data
 
 
-def save_to_file(post_dict, filepath=DATA_FILEPATH):
+def save_to_file(data, filepath=DATA_FILEPATH):
     """
-    Saves the new data to the filepath
-    :param post_dict:
+    Saves the new data to the filepath.
+    :param data:
     :param filepath:
     :return: void
+    """
+    with open(filepath, "w") as handle:
+        content = json.dumps(data, indent=2)
+        handle.write(content)
+
+
+def add_post_to_data(post_dict):
+    """
+    Adds a post to the list of data and saves it to the file.
+    :param post_dict:
+    :return:
     """
     # Retrieve old data
     data = fetch_blog_data()
@@ -34,9 +45,7 @@ def save_to_file(post_dict, filepath=DATA_FILEPATH):
     # append the new_dict to data
     data.append(new_dict)
     # save the data to file
-    with open(filepath, "w") as handle:
-        content = json.dumps(data, indent=2)
-        handle.write(content)
+    save_to_file(data)
 
 
 @app.route('/')
@@ -46,7 +55,7 @@ def index():
 
 
 @app.route('/add', methods=['GET', 'POST'])
-def add():
+def add_post():
     if request.method == 'POST':
         # Retrieve form data
         author = request.form['author'].strip()
@@ -54,10 +63,25 @@ def add():
         content = request.form['content'].strip()
         # Prepare data to pass onto the save_to_file method
         post_dict = {"title": title, "author": author, "content": content}
-        save_to_file(post_dict)
+        add_post_to_data(post_dict)
         # Redirect
         return redirect(url_for('index'))
     return render_template('add.html')
+
+
+@app.route('/delete/<post_id>')
+def delete_post(post_id):
+    # Find the blog post with the given id and remove it from the list
+    data = fetch_blog_data()
+    new_data = []
+    for post in data:
+        if post["id"] == post_id:
+            continue
+        else:
+            new_data.append(post)
+    save_to_file(new_data)
+    # Redirect back to the home page
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
