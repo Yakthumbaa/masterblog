@@ -69,7 +69,7 @@ def add_post():
     return render_template('add.html')
 
 
-@app.route('/delete/<post_id>')
+@app.route('/delete/<int:post_id>')
 def delete_post(post_id):
     # Find the blog post with the given id and remove it from the list
     data = fetch_blog_data()
