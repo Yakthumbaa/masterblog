@@ -76,12 +76,17 @@ def delete_post(post_id):
     save_to_file(new_data)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     """
     Home page. Renders the index.html template
     :return:
     """
+    if request.method == 'POST':
+        post_id = request.form['post_id']
+        return url_for("like", post_id=post_id)
+
+    # Else, display the index.html page
     blog_posts = fetch_blog_data()
     return render_template('index.html', posts=blog_posts)
 
@@ -105,6 +110,8 @@ def add():
 
         # Redirect
         return redirect(url_for('index'))
+
+    # Else, display the add.html page
     return render_template('add.html')
 
 
@@ -149,6 +156,21 @@ def update(post_id):
 
     # Else display the update.html page
     return render_template('update.html', post=post)
+
+
+@app.route('/like/<int:post_id>', methods=["POST"])
+def like(post_id):
+    """
+    Increments the number of likes on the post
+    :param post_id:
+    :return:
+    """
+    blog_data = fetch_blog_data()
+    for post in blog_data:
+        if post["id"] == post_id:
+            post["likes"] += 1
+            save_to_file(blog_data)
+            return redirect(url_for("index"))
 
 
 if __name__ == '__main__':
