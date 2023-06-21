@@ -13,8 +13,13 @@
             <h2 class="post_title">Post Title: {{ post["title"] }}</h2>
             <p class="post_author"><em>Written by: {{ post["author"] }}</em></p>
             <p class="post_content">{{ post["content"] }}</p>
+            <p class="hyperlink_update">
+                <a href="{{ url_for('update', post_id=post['id']) }}">Update Post</a>
+            </p>
         </div>
     {% endfor %}
-    <p class="hyperlink"><a href="{{ url_for('add_post') }}">Click here to create a blog!</a></p>
+    <p class="hyperlink_add_post">
+        <a href="{{ url_for('add') }}">Click here to create a blog!</a>
+    </p>
 </body>
 </html>

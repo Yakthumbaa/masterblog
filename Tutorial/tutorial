@@ -182,3 +182,87 @@ to each blog post on the index page, and creating a new route to handle the dele
 
     And there you have it! You’ve added the ability to delete blog posts to your Flask blog application.
     Your application now supports displaying, adding, and deleting blog posts 🎊
+
+_________________________________ [[ Adding the "Update" Route ]]
+
+In this part, we’re going to add the functionality to update an existing blog post. We’ll need to make
+a couple of changes:
+
+1. Update the index.html template to include an “Update” button next to each blog post.
+2. Create a new route to display the update form.
+3. Update the form to send a POST request to the same route, which will then update the blog post
+   in our storage.
+
+    Step 1. Update the Index Template
+    First, let’s update our index.html template to include an “Update” button next to each blog post.
+    When clicked, this button should send the user to the update route for the corresponding blog post.
+    The route for the update should be:
+
+    /update/<post_id>
+
+    Step 2: Add the Update Route
+    Next, we’ll add a new route in our app.py file to display the update form. This route will respond
+    to both GET and POST requests, similar to our “Add” route.
+
+    On a GET request, we’ll display the update form, populated with the current details of the blog post.
+
+    On a POST request, we’ll update the details of the blog post in our blog_posts list, and then
+    redirect the user back to the index page.
+
+    @app.route('/update/<int:post_id>', methods=['GET', 'POST'])
+    def update(post_id):
+        # Fetch the blog posts from the JSON file
+        post = fetch_post_by_id(post_id)
+        if post is None:
+            # Post not found
+            return "Post not found", 404
+
+        if request.method == 'POST':
+            # Update the post in the JSON file
+            # Redirect back to index
+
+        # Else, it's a GET request
+        # So display the update.html page
+        return render_template('update.html', post=post)
+
+    Step 3. Create the Update Form
+    This can be a bit tricky and required some additional information about HTML. Everything will be
+    explained in the next page!
+
+_________________________________ [[ Designing the "Update" Form ]]
+
+    <<<< Populating HTML fields >>>>
+    When you’re designing an HTML form, you can specify a default value for a field using the value
+    attribute. This attribute sets the initial value for the input field when the page loads.
+
+    Here is a simple example:
+
+    <input type="text" name="name" value="John Doe">
+
+    In this case, “John Doe” is the default value for the text input field. When the user navigates
+    to this form, they will see “John Doe” already filled in the field.
+
+    When it comes to using dynamic values, especially when working with template languages like Jinja2
+    in Flask, you can pass values from the server-side and populate the value attribute dynamically.
+    For example:
+
+    <input type="text" id="author" name="author" value="{{ post.author }}">
+
+    In this case, post.author is a variable passed from the Flask application to the template.
+    The {{ ... }} syntax is used to output the value of an expression in Jinja2 templates. So when
+    the template is rendered, it replaces {{ post.author }} with the actual value of post.author
+    provided by the Flask application. If post.author was "John Doe", for example, the rendered HTML
+    would look like this:
+
+    <input type="text" id="author" name="author" value="John Doe">
+
+    That’s how you can populate form fields with dynamic values in your HTML when using Flask with Jinja2.
+
+    <<<< Create the Update Form >>>>
+    Finally, we’ll create a new template, update.html, to display the update form. This will be very
+    similar to our add.html template, but with a couple of differences:
+
+    1. The action attribute of the form will include the post ID of the blog post to update.
+    2. Each input field will include a value attribute to display the current details of the blog post.
+
+    Here’s an example of what update.html might look like:

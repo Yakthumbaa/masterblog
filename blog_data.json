@@ -16,5 +16,11 @@
     "title": "New blog post",
     "author": "Nikesh",
     "content": "This is a test blog post"
+  },
+  {
+    "id": 4,
+    "author": "Sonia",
+    "title": "I have tried to update",
+    "content": "This is my updated blog post"
   }
 ]

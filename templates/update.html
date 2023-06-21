@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create blog post</title>
+    <title>Update blog post</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>So you want to create a blog post ey? Well go ahead...</h1>
-    <form class= form_container action=# method="POST">
+    <h1>So you want to update a blog post ey? Well ok then...</h1>
+    <form class= form_container action="{{ url_for('update', post_id=post['id']) }}" method="POST">
         <div class="form_content">
             <label for="author">Author:</label><br>
-            <input type="text" id="author" name="author"><br>
+            <input type="text" id="author" name="author" value="{{ post.author }}"><br>
             <label for="title">Title:</label><br>
             <input type="text" id="title" name="title"><br>
             <label for="content">Add your blog here:</label><br>
             <input type="text" id="content" name="content"><br>
-            <div class="button_box"><input class=button type="submit" value="Submit"></div>
+            <div class="button_box"><input class=button type="submit" value="Update"></div>
         </div>
     </form>
 </body>
