@@ -76,6 +76,22 @@ def delete_post(post_id):
     save_to_file(new_data)
 
 
+def update_post(blog_data, post_id, new_post):
+    """
+    Updates the old post with new values.
+    :param blog_data:
+    :param post_id:
+    :param new_post:
+    :return:
+    """
+    for post in blog_data:
+        if post["id"] == post_id:
+            for key, val in post.items():
+                if key != "id":
+                    post[key] = new_post[key]
+    save_to_file(blog_data)
+
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """
@@ -147,9 +163,9 @@ def update(post_id):
         content = request.form['content'].strip()
 
         # Prepare post data and update
-        new_post = {"id": post_id, "author": author, "title": title, "content": content}
-        delete_post(post_id)
-        add_post(new_post)
+        new_post = {"id": post_id, "author": author, "title": title, "content": content,
+                    "likes": post["likes"]}
+        update_post(blog_data=fetch_blog_data(), post_id=post_id, new_post=new_post)
 
         # Redirect back to index
         return redirect(url_for('index'))

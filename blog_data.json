@@ -2,9 +2,9 @@
   {
     "id": 1,
     "author": "John Doe",
-    "title": "First Post",
-    "content": "This is my first post.",
-    "likes": 4
+    "title": "First post: This is my first update",
+    "content": "I have now updated my first post.",
+    "likes": 8
   },
   {
     "id": 2,
